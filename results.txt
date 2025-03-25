@@ -1,0 +1,260 @@
+
+=== Combined Fact-Checking Results ===
+Source: Google Fact Checker
+Claim: In 2020, nine NATO members reached an alliance goal of spending at least 2% of their gross domestic product on defense, and that number rose to 23 members in 2024, recent NATO data shows.
+Factuality: Mostly True
+
+==================================================
+Source: LibrAI
+Claim: In 2020, nine NATO members met their defense spending goal.
+Factuality: 1.0
+Evidences:
+  - Relationship: SUPPORTS
+    Reasoning: The evidence explicitly states that in 2020, nine NATO allies met their defense spending goal of spending 2% of their GDP on defense. This directly confirms the claim that in 2020, nine NATO members met their defense spending goal.
+    URL: https://cssh.northeastern.edu/in-2020-only-nine-nato-allies-were-spending-2-of-their-gdp-on-defense-this-year-23-will-spend-at-least-2/
+  - Relationship: SUPPORTS
+    Reasoning: The evidence includes a statement from President Biden in 2020 stating that only nine NATO allies were meeting the defense spending goal of 2% of their GDP. This directly supports the claim that in 2020, nine NATO members met their defense spending goal.
+    URL: https://www.defensenews.com/pentagon/2024/07/10/as-more-nato-countries-meet-spending-targets-some-push-to-raise-goals/
+  - Relationship: SUPPORTS
+    Reasoning: The evidence clearly states that in 2020, only nine NATO allies were spending 2% of their GDP on defense, which aligns with the claim that in 2020, nine NATO members met their defense spending goal. Therefore, the evidence supports the claim.
+    URL: https://www.politifact.com/factchecks/2024/jul/12/joe-biden/joe-bidens-mostly-true-claim-about-growth-of-nato/
+  - Relationship: SUPPORTS
+    Reasoning: The evidence explicitly states that in 2020, nine NATO allies met their defense spending goal of spending 2% of their GDP on defense. This directly confirms the claim that nine NATO members met their defense spending goal in 2020.
+    URL: https://cssh.northeastern.edu/in-2020-only-nine-nato-allies-were-spending-2-of-their-gdp-on-defense-this-year-23-will-spend-at-least-2/
+  - Relationship: SUPPORTS
+    Reasoning: The evidence includes a statement from President Biden in 2020 stating that only nine NATO allies were meeting the defense spending goal of 2% of their GDP. This directly supports the claim that in 2020, nine NATO members met their defense spending goal.
+    URL: https://www.defensenews.com/pentagon/2024/07/10/as-more-nato-countries-meet-spending-targets-some-push-to-raise-goals/
+  - Relationship: SUPPORTS
+    Reasoning: The evidence clearly states that in 2020, only nine NATO allies were spending 2% of their GDP on defense, which aligns with the claim that in 2020, nine NATO members met their defense spending goal. Therefore, the evidence supports the claim.
+    URL: https://www.politifact.com/factchecks/2024/jul/12/joe-biden/joe-bidens-mostly-true-claim-about-growth-of-nato/
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence discusses how past defense spending by NATO Allies was assessed based on GDP data available at the time but does not specifically mention the number of NATO members that met their defense spending goals in 2020. Without information about how many members met the spending goal or specifics from 2020, the evidence is irrelevant to the claim.
+    URL: https://www.nato.int/nato_static_fl2014/assets/pdf/2023/7/pdf/230707-def-exp-2023-en.pdf
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence states that over two-thirds of NATO allies now meet the minimum defense spending requirement but it does not provide specific details about how many met the goal in 2020. Without specific information about the number of members meeting the goal in 2020, the evidence is insufficient to support or refute the claim. Therefore, the evidence is irrelevant to the claim.
+    URL: https://www.defensenews.com/pentagon/2024/07/10/as-more-nato-countries-meet-spending-targets-some-push-to-raise-goals/
+  - Relationship: SUPPORTS
+    Reasoning: The evidence states that in 2020, only nine NATO allies were spending 2% of their GDP on defense. This directly supports the claim that nine NATO members met their defense spending goal in 2020.
+    URL: https://www.politifact.com/factchecks/2024/jul/12/joe-biden/joe-bidens-mostly-true-claim-about-growth-of-nato/
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence provides information about NATO's defense spending goal, stating that members pledged to spend at least 2% of their GDP on defense by 2024. However, it does not provide any information on whether nine NATO members met their defense spending goal in 2020. Therefore, the evidence is irrelevant to the specific claim about the number of NATO members meeting their defense spending goal in 2020.
+    URL: Google Answer Box
+
+==================================================
+Source: LibrAI
+Claim: The NATO goal was spending 2% of GDP on defense.
+Factuality: 1.0
+Evidences:
+  - Relationship: SUPPORTS
+    Reasoning: The evidence directly states that in 2014, NATO Heads of State and Government agreed to commit 2% of their national GDP to defense spending. This aligns with the claim that the NATO goal was spending 2% of GDP on defense.
+    URL: https://www.nato.int/cps/en/natohq/topics_49198.htm
+  - Relationship: SUPPORTS
+    Reasoning: The evidence states that NATO countries collectively meet and exceed the 2 percent target by spending 2.71 percent of their GDP on defense. This supports the claim that the NATO goal was spending 2% of GDP on defense since it shows NATO countries aiming to meet or exceed this target.
+    URL: https://www.atlanticcouncil.org/blogs/econographics/whos-at-2-percent-look-how-nato-allies-have-increased-their-defense-spending-since-russias-invasion-of-ukraine/
+  - Relationship: SUPPORTS
+    Reasoning: The evidence indicates that NATO has a target for its members to spend 2% of their GDP on defense, which aligns with the claim. Therefore, the evidence supports the claim.
+    URL: https://www.bbc.com/news/world-44717074
+  - Relationship: SUPPORTS
+    Reasoning: The evidence states that members of the military alliance pledged to spend at least 2% of the value of their economies, measured by GDP, on defense by 2024. This directly confirms the claim that the NATO goal was to spend 2% of GDP on defense.
+    URL: Google Answer Box
+  - Relationship: SUPPORTS
+    Reasoning: The evidence clearly states that it is a target of NATO for every member country to spend at least two percent of their GDP on defense. This directly supports the claim that the NATO goal was spending 2% of GDP on defense.
+    URL: https://www.statista.com/statistics/584088/defense-expenditures-of-nato-countries/
+  - Relationship: SUPPORTS
+    Reasoning: The evidence indicates that Allies' defense spending was based on GDP data and mentions a 2% guideline. This aligns with the claim stating that NATO's goal was spending 2% of GDP on defense. The reference to the 2% guideline suggests a connection to NATO's target.
+    URL: https://www.nato.int/nato_static_fl2014/assets/pdf/2024/6/pdf/240617-def-exp-2024-en.pdf
+  - Relationship: SUPPORTS
+    Reasoning: The evidence states that NATO countries, in total, meet a target of spending 2.71% of their GDP on defense, and mentions a 2% target. This aligns with the claim that NATO's goal was spending 2% of GDP on defense. Therefore, the evidence supports the claim.
+    URL: https://www.atlanticcouncil.org/blogs/econographics/whos-at-2-percent-look-how-nato-allies-have-increased-their-defense-spending-since-russias-invasion-of-ukraine/
+
+==================================================
+Source: Google Fact Checker
+Claim: In 2020, nine NATO members reached an alliance goal of spending at least 2% of their gross domestic product on defense, and that number rose to 23 members in 2024, recent NATO data shows.
+Factuality: Mostly True
+
+==================================================
+Source: LibrAI
+Claim: 23 NATO members spent at least 2% of their GDP on defense in 2024.
+Factuality: 1.0
+Evidences:
+  - Relationship: SUPPORTS
+    Reasoning: The evidence states that in 2024, 23 NATO allies are expected to meet or exceed the target of investing at least 2% of GDP in defense. This directly confirms the claim that 23 NATO members spent at least 2% of their GDP on defense in that year.
+    URL: Google Answer Box
+  - Relationship: SUPPORTS
+    Reasoning: The evidence directly states that in 2024, 23 NATO members are expected to meet or exceed the target of investing at least 2% of GDP in defense. This aligns with the claim that 23 NATO members spent at least 2% of their GDP on defense in 2024. Therefore, the evidence supports the claim.
+    URL: Google Answer Box
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence given does not specify how many NATO members spent at least 2% of their GDP on defense in 2024. The phrase 'these Allies have national laws or political agreements which call for 2% of GDP or more to be spent on defence annually' indicates a commitment but does not confirm that 23 NATO members actually met the 2% spending in 2024. The evidence is too vague to either support or refute the claim.
+    URL: https://www.nato.int/nato_static_fl2014/assets/pdf/2024/6/pdf/240617-def-exp-2024-en.pdf
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence provides information about the average expenditure on defense by NATO member states in 2024, which was 2.71 percent. However, it does not specify how many NATO members spent at least 2% of their GDP on defense. Without information on the specific number of countries reaching the 2% threshold, the evidence is not directly relevant to the claim.
+    URL: https://www.statista.com/statistics/584088/defense-expenditures-of-nato-countries/
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence states that NATO countries collectively meet the 2 percent spending target, with a total of 2.71 percent of their GDP spent on defense. However, it does not specify how many individual NATO members spent at least 2 percent of their GDP on defense. Therefore, the evidence is insufficient to prove or disprove the claim that 23 individual NATO members met this target in 2024.
+    URL: https://www.atlanticcouncil.org/blogs/econographics/whos-at-2-percent-look-how-nato-allies-have-increased-their-defense-spending-since-russias-invasion-of-ukraine/
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence mentions that some NATO Allies have laws or political agreements for spending 2% or more of their GDP on defense annually but does not specify the number of NATO members doing so in 2024. Without specific information on the number of NATO members meeting this criterion in 2024, it's not possible to confirm or refute the claim based on this evidence.
+    URL: https://www.nato.int/nato_static_fl2014/assets/pdf/2024/6/pdf/240617-def-exp-2024-en.pdf
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence provides information about the average expenditure on defense by NATO member states in 2024, which was 2.71 percent. However, it does not specify how many NATO members spent at least 2% of their GDP on defense. Without information on the specific number of countries reaching the 2% threshold, the evidence is not directly relevant to the claim.
+    URL: https://www.statista.com/statistics/584088/defense-expenditures-of-nato-countries/
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence states that NATO countries collectively spent 2.71 percent of their GDP on defense. However, it does not specify how many of the NATO members individually spent at least 2% of their GDP on defense. Therefore, the evidence does not directly address the claim that 23 NATO members reached the 2% spending threshold, making it irrelevant to the specific claim.
+    URL: https://www.atlanticcouncil.org/blogs/econographics/whos-at-2-percent-look-how-nato-allies-have-increased-their-defense-spending-since-russias-invasion-of-ukraine/
+
+==================================================
+Source: Google Fact Checker
+Claim: NASA admits the Earth is flat and non-rotating
+Factuality: False
+
+==================================================
+Source: Google Fact Checker
+Claim: Satellites are fake.
+Factuality: There are many man-made satellites currently in orbit, playing an essential role in common electronic devices.
+
+==================================================
+Source: Google Fact Checker
+Claim: The Earth is flat.
+Factuality: We have abundant evidence going back thousands of years that the Earth is roughly spherical.
+
+==================================================
+Source: Google Fact Checker
+Claim: The Earth is flat based on various observations (e.g., photographs taken of objects that should be below the horizon but aren’t)
+Factuality: Incorrect: It has been well established by measurements on Earth (for over 2000 years) and observations from space that the Earth is spherical, rotates on its axis, and revolves around the Sun, contrary to persistent claims based on personal observations.
+
+==================================================
+Source: Google Fact Checker
+Claim: Pictures show the Earth is flat, and sea levels haven’t changed
+Factuality: False
+
+==================================================
+Source: Google Fact Checker
+Claim: Radar technology wouldn’t work if the Earth was a globe
+Factuality: False
+
+==================================================
+Source: Google Fact Checker
+Claim: Video shows Elon Musk admitting he is a flat earther
+Factuality: Altered
+
+==================================================
+Source: Google Fact Checker
+Claim: Earth is flat because we never see shooting stars coming from the bottom up
+Factuality: False
+
+==================================================
+Source: Google Fact Checker
+Claim: Laser tests show bodies of water are level, which proves the Earth is flat
+Factuality: False
+
+==================================================
+Source: Google Fact Checker
+Claim: The Earth is flat, with Mount Meru as its center and a black sun instead of a core
+Factuality: Sphere
+
+==================================================
+Source: LibrAI
+Claim: The world is flat.
+Factuality: 0.0
+Evidences:
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence discusses a book that metaphorically refers to the world 'flattening' in terms of technology and globalization. It does not address the physical shape of the Earth, making it irrelevant to the claim that 'The world is flat.'
+    URL: https://www.amazon.com/World-Flat-History-Twenty-first-Century/dp/0374292884
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence provided is about a book titled 'The World Is Flat' by Thomas L. Friedman, which does not provide any scientific evidence or argument about the actual shape of the Earth. Therefore, it is irrelevant to the claim that the world is flat.
+    URL: https://en.wikipedia.org/wiki/The_World_Is_Flat
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence provided refers to a metaphorical flattening of the world in an economic or technological sense, not a literal geometrical shape of the Earth. Therefore, it is irrelevant to the claim that the world is physically flat.
+    URL: https://www.nytimes.com/2005/04/03/magazine/its-a-flat-world-after-all.html
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence discusses a book that metaphorically refers to the world 'flattening' in terms of technology and globalization. It does not address the physical shape of the Earth, making it irrelevant to the claim that the world is flat.
+    URL: https://www.amazon.com/World-Flat-History-Twenty-first-Century/dp/0374292884
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence refers to 'The World Is Flat' as a book by Thomas L. Friedman that discusses globalization and economic changes, not the physical shape of the Earth. Thus, it is irrelevant to the claim that the world is flat in a literal, physical sense.
+    URL: https://en.wikipedia.org/wiki/The_World_Is_Flat
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence provided discusses a metaphorical flattening of the world in terms of global connectivity and technological advancement, not a literal flat shape of the Earth. Therefore, the evidence is irrelevant to the claim that the world is geographically flat.
+    URL: https://www.nytimes.com/2005/04/03/magazine/its-a-flat-world-after-all.html
+  - Relationship: REFUTES
+    Reasoning: The evidence explains reasons why scientists know that the Earth is round, not flat, providing support for the round Earth theory. Since it states that one could observe vast distances on a flat Earth, among other implicit proofs, it refutes the claim that the world is flat.
+    URL: Google Answer Box
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence mentions that ancient cultures believed the Earth was flat, but the source also implies that this belief was due to a lack of better knowledge. The existence of flat-Earth belief in the past does not provide scientific evidence for the claim made in the present that the world is flat. Since there's no new or credible evidence to support the claim that the world is currently flat, the evidence does not change or impact the modern understanding that the Earth is round. Therefore, the evidence is irrelevant to the current claim.
+    URL: https://www.space.com/how-to-debate-flat-earther.html
+  - Relationship: REFUTES
+    Reasoning: The evidence explains that flat-Earth ideas are based on misunderstandings and that ancient and empirical evidence, such as observations by Greek philosophers like Aristotle, supports a spherical Earth. This directly refutes the claim that the world is flat.
+    URL: https://physicsworld.com/a/fighting-flat-earth-theory/
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence shows that a percentage of survey respondents agree with the claim that the Earth is flat, but it does not provide scientific evidence or information that actually proves the claim is true. Therefore, this survey data neither supports nor refutes the flat Earth claim as it only represents people's beliefs and not factual truth. The evidence is irrelevant to determining the truth of the claim itself.
+    URL: https://carsey.unh.edu/publication/conspiracy-vs-science-survey-us-public-beliefs
+
+==================================================
+Source: LibrAI
+Claim: Kim Jon Ung is the king of the world.
+Factuality: No evidence found.
+Evidences:
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence states that Kim Jong Un is the Supreme Leader of North Korea, which does not support or refute the claim that Kim Jong Un is the 'king of the world'. The claim seems hyperbolic or metaphorical, and the evidence does not address this concept. Therefore, the evidence is irrelevant to the claim.
+    URL: https://en.wikipedia.org/wiki/Kim_Jong_Un
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence states that Kim Jong-un is one of the most powerful people in North Korea and holds titles such as Supreme Leader and Supreme Commander. However, it does not provide any information suggesting he is the 'king of the world'. The claim involves a global position while the evidence only discusses a national context, making it irrelevant to the claim that Kim Jong-un is the king of the world.
+    URL: https://www.quora.com/Why-nobody-talks-about-Kim-Jong-Un-and-North-Korea-anymore-What-happened
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence provided does not mention anything about Kim Jon Ung being the king of the world. It references his call to women for a particular cause, without addressing the claim of him being a global monarch. Therefore, the evidence is irrelevant to the claim.
+    URL: https://assets.korearisk.com/uploads/sites/5/2018/10/20180310.pdf
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence states that Kim Jong Un is a North Korean politician and dictator who is the third Supreme Leader of North Korea. It does not provide any information indicating that he is the king of the world. Therefore, the evidence is irrelevant to the claim that he is the king of the world.
+    URL: https://en.wikipedia.org/wiki/Kim_Jong_Un
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence states that Kim Jong-un is one of the most powerful people in North Korea and holds titles such as Supreme Leader and Supreme Commander. However, it does not provide any information suggesting he is the 'king of the world'. The claim involves a global position while the evidence only discusses his status in North Korea, making the evidence irrelevant to the claim.
+    URL: https://www.quora.com/Why-nobody-talks-about-Kim-Jong-Un-and-North-Korea-anymore-What-happened
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence provided does not mention anything about Kim Jon Ung being the king of the world. It references his call to women for a particular cause, without addressing the claim of him being a global monarch. Therefore, the evidence is irrelevant to the claim.
+    URL: https://assets.korearisk.com/uploads/sites/5/2018/10/20180310.pdf
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence states that Kim Jong Un is part of the executive branch of the North Korean government, but it does not mention him being the 'king of the world.' The evidence is related to his role within North Korea specifically and does not support the idea of him ruling the world. Hence, it does not support the claim and is irrelevant to the idea of global rulership.
+    URL: Google Answer Box
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence states that Kim Jong Un holds titles such as General Secretary of the Workers' Party of Korea and President of the State Affairs in North Korea, but it does not support the claim that he is 'the king of the world.' Therefore, the evidence does not support the claim and is irrelevant to the assertion about him being 'king of the world.'
+    URL: Google Answer Box
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence provides a general definition of what a king is but does not address Kim Jong Un or any specific person being the 'king of the world'. Therefore, the evidence is irrelevant to the claim about Kim Jong Un.
+    URL: https://en.wikipedia.org/wiki/King
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence provided discusses historical figures who claimed titles such as 'King of the Universe' and 'King of the Four Corners of the World,' but it does not mention Kim Jong Un or provide any supporting or refuting information regarding him being the 'king of the world.' Therefore, the evidence is irrelevant to the claim about Kim Jong Un.
+    URL: https://www.quora.com/Which-historical-figure-could-most-legitimately-proclaim-I-m-the-King-of-the-world
+  - Relationship: IRRELEVANT
+    Reasoning: The evidence discusses the title 'Great King' used by early Seleucid kings, specifically Antiochus the Great. It does not provide any information about Kim Jon Ung or his status as 'king of the world'. Therefore, the evidence is irrelevant to the claim.
+    URL: https://en.wikipedia.org/wiki/List_of_people_known_as_the_Great
+
+==================================================
+Source: LibrAI
+Claim: Abraham Lincoln is alive.
+Factuality: 0.0
+Evidences:
+  - Relationship: REFUTES
+    Reasoning: The evidence clearly states that President Abraham Lincoln died on April 15, 1865. Therefore, it refutes the claim that Abraham Lincoln is alive.
+    URL: Google Answer Box
+  - Relationship: REFUTES
+    Reasoning: The evidence states that Abraham Lincoln died on April 15, 1865, at the age of 56. This confirms that Abraham Lincoln is not alive, which directly refutes the claim.
+    URL: Google Answer Box
+  - Relationship: REFUTES
+    Reasoning: The evidence states that Abraham Lincoln died on April 15, 1865, which directly contradicts the claim that he is alive. Therefore, the evidence refutes the claim.
+    URL: https://fords.org/lincolns-assassination/lincolns-death/
+  - Relationship: REFUTES
+    Reasoning: The evidence states that Abraham Lincoln was shot on the night of April 14, 1865, indicating he was alive at that time, not in the present day. This information refutes the claim that Abraham Lincoln is currently alive.
+    URL: https://www.senate.gov/artandhistory/history/common/civil_war/Death_of_Lincoln.htm
+  - Relationship: REFUTES
+    Reasoning: The evidence states that Abraham Lincoln was shot on the evening of April 14, 1865. This historical fact indicates that he died as a result of the assassination. Since the claim asserts that Abraham Lincoln is alive, and the evidence confirms he was assassinated, the evidence refutes the claim.
+    URL: https://www.loc.gov/collections/abraham-lincoln-papers/articles-and-essays/assassination-of-president-abraham-lincoln/
+  - Relationship: REFUTES
+    Reasoning: The evidence states that Abraham Lincoln died on April 15, 1865, which directly contradicts the claim that he is alive. Therefore, the evidence refutes the claim.
+    URL: https://fords.org/lincolns-assassination/lincolns-death/
+  - Relationship: REFUTES
+    Reasoning: The evidence clearly states that President Lincoln was shot on the night of April 14, 1865, which indicates that he is not alive. This is a well-documented historical fact. Therefore, the evidence refutes the claim that Abraham Lincoln is alive.
+    URL: https://www.senate.gov/artandhistory/history/common/civil_war/Death_of_Lincoln.htm
+  - Relationship: REFUTES
+    Reasoning: The evidence states that Abraham Lincoln was shot on the evening of April 14, 1865. This historical fact indicates that he died as a result of the assassination. Since the claim is that Abraham Lincoln is alive, and the evidence confirms he was assassinated, it refutes the claim.
+    URL: https://www.loc.gov/collections/abraham-lincoln-papers/articles-and-essays/assassination-of-president-abraham-lincoln/
+
+==================================================
