@@ -3,22 +3,15 @@ import os
 import json
 import requests
 from openai import OpenAI
-import yaml
+from factcheck import FactCheck
 import time
 from contextlib import redirect_stderr, redirect_stdout
-from OpenFactVerification.factcheck import FactCheck
-import asyncio
-import aiohttp
-from concurrent.futures import ThreadPoolExecutor
 
 # use pytests to setup test cases in seperate file
 
-# Load configuration
-with open("config.yaml", "r") as file:
-    config = yaml.safe_load(file)
 
 # Function to extract facts from an article using OpenAI
-def extractFacts(article_text):
+def extract_facts_gpt(article_text):
     
     print("-------------Extracting facts, claims, and statistics from article-------------")
     
@@ -56,7 +49,7 @@ def extractFacts(article_text):
 
 
 # Function to call the Google Fact Check API
-def googleFactCheck(claim):
+def check_fact_with_google(claim):
     print(f"\n--------------------in google check for claim: {claim}--------------------\n")
     url = "https://factchecktools.googleapis.com/v1alpha1/claims:search"
     params = {
@@ -74,8 +67,7 @@ def googleFactCheck(claim):
         print(f"\n--------------------End Google check for claim: {claim}--------------------\n")
         return None
 
-
-# librAI call (no longer being used, switch to an async func)
+# librAI call
 def call_librAI_fact_check_api(claim):
     
     print(f"\n--------------------in LibrAi check for claim: {claim}--------------------\n")
@@ -100,7 +92,7 @@ def call_librAI_fact_check_api(claim):
 
 
 # Function to combine Google and LibrAI fact-checking results
-def combineResults(google_results, librAI_results):
+def combine_fact_check_results(google_results, librAI_results):
     combined_results = []
 
     # Process Google API results
@@ -126,9 +118,47 @@ def combineResults(google_results, librAI_results):
             })
 
     return combined_results
+    
+# Display fact-checking results
+def display_fact_check_results(factcheck_results):
+    claims = factcheck_results.get('claim_detail', [])
+    overall_factuality = factcheck_results.get('summary', {}).get('factuality', 'N/A')
+
+    print("\n=== Fact-Checking Results ===")
+    if isinstance(overall_factuality, float):
+        print(f"Overall Factuality Score: {overall_factuality * 100:.2f}%\n")
+    else:
+        print(f"Overall Factuality Score: {overall_factuality}\n")
+
+    for claim_data in claims:
+        claim = claim_data.get('claim', 'Unknown Claim')
+        factuality = claim_data.get('factuality', 'N/A')
+        evidences = claim_data.get('evidences', [])
+
+        print(f"Claim: {claim}")
+        if isinstance(factuality, float):
+            print(f"Factuality Score: {factuality * 100:.2f}%")
+        else:
+            print(f"Factuality Score: {factuality}")
+
+        if evidences:
+            print("Sources/Proof:")
+            for evidence in evidences:
+                relationship = evidence.get('relationship', 'Unknown')
+                reasoning = evidence.get('reasoning', 'No reasoning provided')
+                url = evidence.get('url', 'No URL provided')
+
+                print(f"  - Relationship: {relationship}")
+                print(f"    Reasoning: {reasoning}")
+                print(f"    URL: {url}")
+        else:
+            print("No evidence found for this claim.")
+
+        print("\n" + "="*50 + "\n")
+
 
 # Display combined fact-checking results
-def displayCombinedResults(combined_results):
+def display_combined_results(combined_results):
     with open("results.txt", "w") as file:
         file.write("\n=== Combined Fact-Checking Results ===\n")
         for result in combined_results:
@@ -147,89 +177,75 @@ def displayCombinedResults(combined_results):
             file.write("\n==================================================\n")
 
 
-
-
-# Asynchronous function to call LibrAI Fact Checking API
-async def asyncLibrAI(claim, factcheck_instance):
-    try:
-        # Run synchronous function in thread pool to avoid blocking
-        loop = asyncio.get_event_loop()
-        result = await loop.run_in_executor(None, factcheck_instance.check_text, claim)
-        return result if result else {}
-    except Exception as e:
-        print(f"LibrAI API error: {e}")
-        return {}
-
-# asynchronous fact-checking function for both google and librai (only LibrAI is async)
-async def asyncFactCheck(parsed_facts, config, factcheck_instance):
-    tasks = []
-    combined_results = []
-
-    for fact in parsed_facts:
-        claim = fact["claim"]
-
-        # google API call
-        google_results = googleFactCheck(claim)
-
-        # Asynchronous LibrAI API call
-        librAICheck = asyncLibrAI(claim, factcheck_instance)
-        tasks.append(asyncio.create_task(librAICheck))
-
-        # Combine Google results immediately
-        combined_results.extend(combineResults(google_results, {}))
-
-    # Wait for all LibrAI async tasks to complete
-    librAI_results_list = await asyncio.gather(*tasks)
-
-    # Combine LibrAI results
-    for librAI_results in librAI_results_list:
-        combined_results.extend(combineResults([], librAI_results))
-
-    return combined_results
-
-#main func to call
-def fullFactCheckTest(file_path, config=config, factcheck_instance = FactCheck(api_config=config)):
+def fullFactCheckTest(file_path):
+    # file_path = input("\nPlease enter file path of article: ")
+    
+    # if file_path == "":
+    #     file_path = 'someTrueSomeFaketest.txt'
+        
     with open(file_path, 'r') as file:
         article_content = file.read()
 
     # Extract facts from the article
-    facts = extractFacts(article_content)
+    facts = extract_facts_gpt(article_content)
+
+    # print(f"facts after extraction: {facts}")
+    # print(type(facts))
 
     if facts:
         try:
             parsed_facts = json.loads(facts)
+            combined_results = []
 
-            #asynchronous fact-checking
-            combined_results = asyncio.run(asyncFactCheck(parsed_facts, config, factcheck_instance))
+            for fact in parsed_facts:
+                claim = fact["claim"]
+                # print(f"Checking claim: {claim}")
+
+                # Call Google Fact Check API
+                google_results = check_fact_with_google(claim)
+                # print(f"Google Results for '{claim}': {google_results}")
+
+                # Call LibrAI Fact Checking API
+                librAI_results = call_librAI_fact_check_api(claim)
+                # print(f"LibrAI Results for '{claim}': {librAI_results}")
+
+                # Combine the results
+                combined_results.extend(combine_fact_check_results(google_results, librAI_results))
 
             # Display combined results
-            displayCombinedResults(combined_results)
-
-            # Scoring logic
+            display_combined_results(combined_results)
+            
+            # calculate score for google fact checker
+            # print(".....................")
+            # print(combined_results)
+            
             google_score = 0
             google_numTrue = 0
             google_results = [result for result in combined_results if result.get("source") == "Google Fact Checker"]
 
             for result in google_results:
+                # print("google true")
+                # print(result.get("claim"))
+                # print(result.get("factuality"))
                 if result.get("factuality") == "True":
-                    google_numTrue += 1
-                elif result.get("factuality") == "Mostly True":
-                    google_numTrue += 0.7
-
-            google_score = google_numTrue / len(parsed_facts) if parsed_facts else 0
-
-            # Calculate score for LibrAI fact checker
+                    google_numTrue+=1
+                if result.get("factuality") == "Mostly True":
+                    google_numTrue+=.7
+                    
+            google_score = google_numTrue/len(parsed_facts)
+            
+            # calculate score for Librai fact checker
             librai_score = 0
             librai_Total = 0
             librai_results = [result for result in combined_results if result.get("source") == "LibrAI"]
-
+            
             for result in librai_results:
-                factuality = result.get("factuality", 0)
-                if factuality not in ["No evidence found.", "Nothing to check."]:
-                    librai_Total += float(factuality)
-
-            librai_score = librai_Total / len(librai_results) if librai_results else 0
-
+                if result.get("factuality") == "No evidence found." or result.get("factuality") == "Nothing to check.":
+                    continue
+                librai_Total += result.get("factuality")
+                    
+            librai_score = librai_Total/len(librai_results)
+            
             # Normalize scores to 0-1 range
             google_score = google_score if google_score <= 1 else google_score / 100
             librai_score = librai_score if librai_score <= 1 else librai_score / 100
@@ -248,8 +264,10 @@ def fullFactCheckTest(file_path, config=config, factcheck_instance = FactCheck(a
             print(f"Overall fact check score: {overall_score}%")
 
             return overall_score
+            
 
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON: {e}")
     else:
         print("Failed to extract facts.")
+        

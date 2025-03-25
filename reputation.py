@@ -1,166 +1,367 @@
-import os
-import time
+# linkedin.py
 import requests
-import google.generativeai as genai
-from dotenv import load_dotenv
-from urllib.parse import urlparse
-load_dotenv()
-import sys, os
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.append(parent_dir)
-from progressHold import add_progress
+from datetime import datetime
 
-# Configure generative model (if you need it later in your app)
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-generation_config = {
-    "temperature": 0.7,
-    "top_p": 0.95,
-    "top_k": 64,
-    "max_output_tokens": 65536,
-    "response_mime_type": "text/plain",
-}
-model = genai.GenerativeModel(
-    model_name="gemini-2.0-flash-thinking-exp-01-21", generation_config=generation_config
-)
-chat_session = model.start_chat(history=[])
 
-def virus_check(article_url):
-    # Submit the URL for scanning
-    vt_url = "https://www.virustotal.com/api/v3/urls"
-    payload = {"url": article_url}
-    headers = {
-        "accept": "application/json",
-        "x-apikey": os.getenv("VIRUSTOTAL_API_KEY"),
-        "content-type": "application/x-www-form-urlencoded"
-    }
-    add_progress()
-    post_response = requests.post(vt_url, data=payload, headers=headers)
+#API: https://rapidapi.com/rockapis-rockapis-default/api/linkedin-data-api/playground/apiendpoint_1d2ead16-5039-4883-ac25-390fa57edf94
+def calculate_experience_score(positions):
+    """Calculate score based on work experience"""
+    if not positions:
+        return 0, 0, 0
+    
+    total_years = 0
+    leadership_roles = 0
+    total_positions = len(positions) if positions else 0
+    current_year = datetime.now().year
     
     try:
-        post_json = post_response.json()
-        analysis_id = post_json["data"]["id"]
-    except Exception as e:
-        print("Error parsing VirusTotal submission response:", e)
-        return None
+        for position in positions:
+            # Calculate duration
+            start_year = position.get('start', {}).get('year', 0)
+            end_year = position.get('end', {}).get('year')
+            
+            # Handle ongoing positions (end_year = 0)
+            if end_year == 0:
+                end_year = current_year
+            
+            if start_year > 0 and end_year >= start_year:
+                duration = end_year - start_year
+                total_years += duration
+                
+                # Check for leadership positions
+                title = position.get('title', '').lower()
+                if any(role in title for role in ['ceo', 'chief', 'president', 'director', 'vp', 'head', 'leader', 'founder']):
+                    leadership_roles += 1
+    except (TypeError, AttributeError):
+        return 0, 0, 0
+    
+    # Calculate scores with reasonable caps
+    experience_score = min(40, total_years * 2)  # Cap at 40 points
+    leadership_score = min(20, leadership_roles * 4)  # Cap at 20 points, 5 points per leadership role
+    
+    total_score = min(60, experience_score + leadership_score)  # Ensure total doesn't exceed 60
+    
+    return total_score, total_positions, leadership_roles
+
+def get_google_scholar_data(name, api_key):
+    """Fetch Google Scholar profile data using SerpApi, https://serpapi.com/google-scholar-api"""
+    try:
+        url = f"https://serpapi.com/search.json"
+        params = {
+            "engine": "google_scholar_profiles",
+            "mauthors": name,
+            "hl": "en",  # Specify language,
+            "api_key": api_key
+        }
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        data = response.json()
+        if "profiles" in data and data["profiles"]:
+            author = data["profiles"][0]
+            citation_count = author.get('cited_by', 0)
+            return citation_count
+
+        print("No scholar profiles found.")
+        return 0
+    
+    except requests.RequestException as e:
+        print(f"Request error fetching Google Scholar data: {e}")
+        return 0
+    
+#Google Safe Browsing API Integration
+def check_url_safety(api_key, url):
+    """Check URL safety using Google Safe Browsing API"""
+    try:
+        safe_browsing_url = "https://safebrowsing.googleapis.com/v4/threatMatches:find"
+        payload = {
+            "client": {
+                "clientId": "your-client-id",
+                "clientVersion": "1.0"
+            },
+            "threatInfo": {
+                "threatTypes": ["MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"],
+                "platformTypes": ["ANY_PLATFORM"],
+                "threatEntryTypes": ["URL"],
+                "threatEntries": [{"url": url}]
+            }
+        }
+        headers = {"Content-Type": "application/json"}
+        params = {"key": api_key}
         
-    # Build URL for analysis results endpoint using the analysis_id
-    analysis_url = f"https://www.virustotal.com/api/v3/analyses/{analysis_id}"
-    add_progress()
-    # Poll the analysis endpoint until the status is "completed" or until timeout
-    timeout = 600           # Maximum wait time in seconds
-    interval = 5           # Polling interval in seconds
-    elapsed = 0
-    analysis_json = None
-    add_progress()
-    while elapsed < timeout:
-        analysis_response = requests.get(analysis_url, headers={
-            "accept": "application/json",
-            "x-apikey": os.getenv("VIRUSTOTAL_API_KEY")
-        })
-        try:
-            analysis_json = analysis_response.json()
-            status = analysis_json["data"]["attributes"].get("status", "").lower()
-            if status == "completed":
-                break
-            else:
-                print(f"Analysis status is '{status}'. Waiting {interval} seconds...")
-        except Exception as e:
-            print("Error parsing analysis response:", e)
-
-        time.sleep(interval)
-        elapsed += interval
-    else:
-        print("Timed out waiting for analysis to complete.")
-        return None
-
-    try:
-        stats = analysis_json["data"]["attributes"]["stats"]
-        malicious = stats.get("malicious", 0)
-        suspicious = stats.get("suspicious", 0)
+        response = requests.post(safe_browsing_url, json=payload, params=params, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+        
+        # If the response contains a threat match, URL is unsafe
+        if data.get("matches"):
+            return False  # Unsafe
+        return True  # Safe
     except Exception as e:
-        print("Error parsing stats from analysis:", e)
-        return None
-    add_progress()
-    # Calculate a reputation score from 1 to 10
-    # Deduct 2 points for each malicious detection and 1 point for each suspicious detection,
-    # ensuring score is bounded between 1 and 10.
-    score = 10 - (malicious * 2) - (suspicious)
-    score = max(1, min(10, score))
-    add_progress()
-    print("VirusTotal Submission Response:")
-    print(post_json)
-    print("\nFinal Analysis Response:")
-    print(analysis_json)
-    print("\nCalculated Reputation Score:", score)
-    add_progress()
-    return score, analysis_json
-#virus_check("https://br-icloud.com.br")
+        print(f"Error checking URL safety: {str(e)}")
+        return None  # Unknown safety status
 
-
-chat_session = model.start_chat(history=[])
-
-def extract_author(article_text):
-    # Create a prompt that asks Gemini to extract only the author's name.
-    prompt = (
-        "Read the following article text and extract ONLY the author's name. "
-        "If the article does not contain an author, simply reply with 'N/A'.\n\n"
-        "Article Text:\n" + article_text + "\n\nAuthor:"
-    )
-
+# Integration into the main credibility score
+def calculate_url_score(api_key, url):
+    """Calculate a score based on URL safety"""
     try:
-        response = chat_session.send_message(prompt)
-        # Strip any leading/trailing whitespace
-        author = response.text.strip()
-        #print("Extracted Author:", author)
-        return author
+        is_safe = check_url_safety(api_key, url)
+        if is_safe is None:
+            return 0  # Neutral score if API fails
+        return 10 if is_safe else -10  # Reward 10 points for safe URLs, penalize 10 for unsafe
     except Exception as e:
-        print(f"Error extracting author: {e}")
-        return "N/A"
+        print(f"Error calculating URL score: {str(e)}")
+        return 0
 
 
-chat_session = model.start_chat(history=[])
-def generate_author_trustworthiness(author,url):
-    # Create a prompt that asks Gemini to evaluate the trustworthiness of the author.
-    trimmed_url = urlparse(url).netloc.lstrip("www.")
-    prompt = (
-        "Evaluate the trustworthiness of the following author on a scale of 1 to 10, "
-        "where 1 is not trustworthy and 10 is highly trustworthy. "
-        "Provide a number between 1 and 10, with no additional text.\n\n"
-        f"Author: {author}\n\nURL: {trimmed_url}"
-    )
-
+def calculate_scholar_score(citation_count):
+    """Calculate score based on scholarly data"""
     try:
-        response = chat_session.send_message(prompt)
-        # Strip any leading/trailing whitespace
-        score = response.text.strip()
-        #print("Author Trustworthiness Score:", score)
-        return score
+        citation_score = min(10, citation_count / 1000)
+
+        total_scholar_score = citation_score
+        return total_scholar_score
     except Exception as e:
-        print(f"Error generating author trustworthiness score: {e}")
-        return 1
+        print(f"Error calculating scholar score: {str(e)}")
+        return 0
+
+
+def calculate_education_score(educations):
+    """Calculate score based on education"""
+    if not educations:
+        return 0, 0
     
-def get_reputation_score(article_text, article_url):
-    # Extract the author from the article text
-    author = extract_author(article_text)
-    # Evaluate the trustworthiness of the author
-    author_score = generate_author_trustworthiness(author, article_url)
-    # Check the reputation of the article URL
-    reputation_score, reputation_analysis = virus_check(article_url)
-    final_score = (int(author_score) + int(reputation_score)) / 2
-    prompt = (
-        f"You have given the article an overall Reputation Score of {final_score:.2f} out of 10, based equally off of the domain's safety and the author's public persona/reputation. "
-        "Based on this score and the returned Virustotal text given below, provide a 3-4 sentence explanation "
-        "detailing the reputation aspects assessed. Reference specific parts of the text."
-        "Be confident in your response, you are providing only additional context. You agree with the score. Virustotal's report: {reputation_analysis}. Full article text: {article_text}. URL: {article_url} Be professional in your response."
-        "You are not justifying the score, but providing additional context. Do not use words like likely or possibly."
-    )
     try:
-        response = chat_session.send_message(prompt)
-        reasoning = response.text.strip()
-        print(reasoning)
-        return final_score, reasoning
+        score = 0
+        edu_count = len(educations) if educations else 0
+        
+        for education in educations:
+            degree = education.get('degree', '').lower()
+            # Points for degree level
+            if any(d in degree for d in ['phd', 'doctorate']):
+                score += 15
+            elif any(d in degree for d in ['mba', 'master']):
+                score += 10
+            elif any(d in degree for d in ['bachelor', 'bs', 'ba', 'b.s', 'b.a', 'ab']):
+                score += 8
+        return min(20, score), edu_count
+    except (TypeError, AttributeError):
+        return 0, 0
+
+def calculate_skill_score(skills):
+    """Calculate score based on skills and endorsements listed on linkedin"""
+    if not skills:
+        return 0, 0, 0
+    
+    try:
+        total_endorsements = sum(skill.get('endorsementsCount', 0) for skill in skills)
+        skill_count = len(skills) if skills else 0
+        endorsement_score = min(10, total_endorsements / 20)  # Cap at 10 points
+        skill_variety_score = min(10, skill_count / 2)  # Cap at 10 points
+        return endorsement_score + skill_variety_score, skill_count, total_endorsements
+    except (TypeError, AttributeError):
+        return 0, 0, 0
+
+def get_linkedin_profile(name, headers):
+    """Get LinkedIn profile data"""
+    try:
+        url = "https://linkedin-data-api.p.rapidapi.com/"
+        querystring = {"username": name}
+        response = requests.get(url, headers=headers, params=querystring)
+        
+        if response.status_code == 200:
+            data = response.json()
+            if not data or data.get('error') or data.get('status') == 'error':
+                return None
+            return data
+        return None
     except Exception as e:
-        print(f"Error generating reputation reasoning: {e}")
-        return 1, "Error retrieving explanation"
-#get_reputation_score("This article was written by Annie Karni.", "https://www.nytimes.com/2025/03/05/us/politics/democrats-trump-al-green-protests-congress.html")
+        print(f"Error fetching profile: {str(e)}")
+        return None
+
+def get_domain_trust_score(domain, api_key):
+    """
+    Fetch domain trust score from ScamPredictor API
+    
+    Args:
+        domain (str): The domain to check
+        api_key (str): RapidAPI key
+    
+    """
+    try:
+        url = f"https://scampredictor.p.rapidapi.com/domain/{domain}"
+        
+        headers = {
+            "x-rapidapi-key": api_key,
+            "x-rapidapi-host": "scampredictor.p.rapidapi.com"
+        }
+        
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            class_score = data.get('domain_class', 5)
+            trust_score = class_score
+            if 1 <= trust_score <= 5:
+                return trust_score
+            else:
+                print(f"Invalid class score received: {class_score}")
+                return 0
+        else:
+            print(f"Failed to fetch domain trust score. Status code: {response.status_code}")
+            return 0
+    
+    except requests.RequestException as e:
+        print(f"Error fetching domain trust score: {e}")
+        return 0
+
+def get_empty_score_breakdown():
+    """Return an empty score for no authors"""
+    return {
+        'total_score': 0,
+        'experience_score': 0,
+        'education_score': 0,
+        'skill_score': 0,
+        'scholar_score': 0,
+        'url_score': 0,
+        'domain_score': 0,
+        'scoring_factors': {
+            'years_of_experience': 0,
+            'leadership_positions': 0,
+            'education_count': 0,
+            'skill_count': 0,
+            'total_endorsements': 0,
+            'citation_count': 0,
+            'url': 'N/A',
+            'domain': 'N/A',
+            'domain_trust_score': 0,
+            'url_safe': 'Unknown'
+        }
+    }
+
+def calculate_credibility_score(profile_data, scholar_data, url, safe_browsing_api_key, domain_api_key):
+    """Calculate overall credibility score"""
+    if not profile_data and not scholar_data:
+        return 0, get_empty_score_breakdown()
+    
+    try:
+        from urllib.parse import urlparse
+        parsed_url = urlparse(url)
+        domain = parsed_url.netloc.replace('www.', '')
+        positions = profile_data.get('position', []) or profile_data.get('fullPositions', []) or []
+        educations = profile_data.get('educations', []) or []
+        skills = profile_data.get('skills', []) or []
+        
+        experience_score, position_count, leadership_count = calculate_experience_score(positions)
+        education_score, edu_count = calculate_education_score(educations)
+        skill_score, skill_count, endorsement_count = calculate_skill_score(skills)
+        
+        # Scholar data
+        citation_count= scholar_data
+        scholar_score = calculate_scholar_score(citation_count)
+        
+        # URL safety score
+        url_score = calculate_url_score(safe_browsing_api_key, url)
+
+        domain_trust_score = get_domain_trust_score(domain, domain_api_key)
+        domain_score = domain_trust_score * 2  # Convert 1-5 scale to 2-10 points
+        
+        # Weight factors for final score
+        WEIGHTS = {
+            'experience': 15, 
+            'education': 10,   
+            'skills': 5,      
+            'scholar': 5,     
+            'url_safety': 30,  
+            'domain_trust': 35 
+        }
+        MAX_SCORES = {
+            'experience': 60,
+            'education': 20,
+            'skills': 20,
+            'scholar': 10,
+            'url_safety': 10,
+            'domain_trust': 10
+        }
+
+        # Normalize and weight scores
+        total_weight = sum(WEIGHTS.values())
+        experience_contribution = (experience_score / MAX_SCORES['experience']) * WEIGHTS['experience']
+        print("experience_contribution:", experience_contribution)
+        education_contribution = (education_score / MAX_SCORES['education']) * WEIGHTS['education']
+        print("education_contribution:", education_contribution)
+        skill_contribution = (skill_score / MAX_SCORES['skills']) * WEIGHTS['skills']
+        print("skill_contribution:", skill_contribution)
+        scholar_contribution = (scholar_score / MAX_SCORES['scholar']) * WEIGHTS['scholar']
+        print("scholar_contribution:", scholar_contribution)
+        url_contribution = (url_score / MAX_SCORES['url_safety']) * WEIGHTS['url_safety']
+        print("url_contribution:", url_contribution)
+        domain_contribution = (domain_score / MAX_SCORES['domain_trust']) * WEIGHTS['domain_trust']
+        print("domain_contribution:", domain_contribution)
+        
+        normalized_score = (
+            experience_contribution
+            + education_contribution
+            + skill_contribution
+            + scholar_contribution
+            + url_contribution
+            + domain_contribution
+        )
+        total_percentage_score = (normalized_score / total_weight) * 10
+        score_breakdown = {
+            'total_score': total_percentage_score,
+            'experience_score': experience_score,
+            'education_score': education_score,
+            'skill_score': skill_score,
+            'scholar_score': scholar_score,
+            'url_score': url_score,
+            'domain_score': domain_score,
+            'scoring_factors': {
+                'years_of_experience': position_count,
+                'leadership_positions': leadership_count,
+                'education_count': edu_count,
+                'skill_count': skill_count,
+                'total_endorsements': endorsement_count,
+                'citation_count': citation_count,
+                'url': url,
+                'domain': domain,
+                'domain_trust_score': domain_trust_score,
+                'url_safe': "Safe" if url_score > 0 else "Unsafe" if url_score < 0 else "Unknown"
+            }
+        }
+        
+        return total_percentage_score, score_breakdown
+    except Exception as e:
+        print(f"Error calculating credibility score: {str(e)}")
+        return 0, get_empty_score_breakdown()
+
+
+from flask import Flask, request, jsonify
+from reputation import calculate_credibility_score, get_linkedin_profile, get_google_scholar_data
+
+app = Flask(__name__)
+
+@app.route('/calculate', methods=['POST'])
+def calculate():
+    try:
+        data = request.json
+        scholar_name = data['scholarName']
+        linkedin_username = data['linkedinUsername']
+        website_url = data['websiteUrl']
+
+        headers = {"X-RapidAPI-Key": "7c963ab537msh1c91075acd364b3p1ff392jsnf523b930f1dd", "X-RapidAPI-Host": "linkedin-data-api.p.rapidapi.com"}
+        scholar_api_key = "0b336f30e9feb2ef6991a61edda58e813bbf368bd6e8a9c92f2f0c0a8bff8482"
+        safe_browsing_api_key = "AIzaSyCAPWZUkjobj7T-mX2p0kI5A3PeGSrn5as"
+        domain_api_key = "7c963ab537msh1c91075acd364b3p1ff392jsnf523b930f1dd"
+
+        profile_data = get_linkedin_profile(linkedin_username, headers)
+        scholar_data = get_google_scholar_data(scholar_name, scholar_api_key)
+
+        if profile_data or scholar_data:
+            score, _ = calculate_credibility_score(profile_data, scholar_data, website_url, safe_browsing_api_key, domain_api_key)
+            return jsonify({"score": score})
+        else:
+            return jsonify({"error": "Unable to fetch profile or scholar data"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(port=5000)
