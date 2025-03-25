@@ -6,7 +6,7 @@ import json
 
 # Initialize OpenAI client with the API key from environment variable or other secure storage
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "[openai-key-will-go-here-temp]")  # Replace with secure method
-client = OpenAI(api_key="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") 
+client = OpenAI(api_key="sk") 
 
 def extract_reputation_data(text):
     """
